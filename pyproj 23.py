@@ -10,6 +10,6 @@ def open_app_win():
 def submit_login():
     username = username_entry.get()
     password = username_entry.get()
-    if username == "gid.l.ehk.tom" and password == "alcid.corv.0.111.00.11":
+    if username == "gid.l.ehk.tom" and password == "corv.0.111.00.11.e":
         messagebox.showinfo("Login Successful.", "Welcome to the Tomia.")
 
