@@ -19,7 +19,7 @@ def destroy():
 
 def submit_login():
     username = username_entry.get()
-    password = username_entry.get()
+    password = password_entry.get()
     if username == "a" and password == "b":
         messagebox.showinfo("Login Successful.", "Welcome to the Tomia.")
         # destroy login window
