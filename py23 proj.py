@@ -5,46 +5,73 @@ from tkinter import ttk
 from tkinter import messagebox
 # creating the application window
 def open_app_win():
+    # creating app_win
     app_win = tk.Tk()
     app_win.title("TomSys")
     # window size
     app_win.geometry("1200x1000")
-    #wiget
-    tk.Label(app_win, text="da title",font=('Menlo', 25)).place(relx=0.5,rely=0, anchor="n")
-    tk.Label(app_win, text="")
-    # event loop for the app win
+    # pre-setting profile vars
+    firstname = ""
+    lastname = ""
+    ageyear = ""
+    agemonth = ""
+    usrpronoun = ""
+    # submit command button
+
+    # profile setting widgets
+    frame = tk.Frame(app_win)
+    frame.place(x=0,y=0,height=800, width=1200)
+    frame["relief"]="groove"
+    while True:
+        # flavor text (title etc)
+        tk.Label(app_win, text="TomSys SetProfile",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
+        tk.Label(frame, text="Welcome. Please complete your profile.",font=('Menlo',18)).place(relx=.5, rely=.05, anchor="n")
+        # first name
+        tk.Label(frame, text="First Name:", font=('Menlo',15)).place(relx=.3, rely=.16, anchor="w")
+        fname_entry = tk.Entry(frame)
+        fname_entry.place(relx=.3,rely=.19,anchor="w")
+        # last name
+        tk.Label(frame, text="Last Name:", font=('Menlo',15)).place(relx=.3,rely=.23,anchor="w")
+        lname_entry = tk.Entry(frame)
+        lname_entry.place(relx=.3,rely=.26,anchor="w")
+        # age (years)
+        tk.Label(frame, text="Age (Years):", font=('Menlo',15)).place(relx=.7,rely=.16,anchor="e")
+        yrage_entry = tk.Entry(frame)
+        yrage_entry.place(relx=.7,rely=.19,anchor="e")
+        # age (months)
+        tk.Label(frame, text="Age (Addl. Months):",font=('Menlo',15)).place(relx=.7,rely=.23,anchor="e")
+        mnage_entry = tk.Entry(frame)
+        mnage_entry.place(relx=.7,rely=.26,anchor="e")
+        # pronouns
+        tk.Label(frame, text="Pronouns:", font=('Menlo', 15)).place(relx=.5, rely=.46,anchor="center")
+        current_var = tk.StringVar()
+        current_value = current_var.get()
+        prncombo = ttk.Combobox(frame, state="readonly", textvariable=current_var)
+        prncombo['values'] = ("He/Him/His", "She/Her/Hers", "They/Them/Theirs", "Other")
+        prncombo.place(relx=.5, rely=.50,anchor="center")
+        tk.Label(frame, text="If 'Other', please specify here.", font=('Menlo', 12)).place(relx=.5,rely=.56,anchor='center')
+        prnother = tk.Entry(frame)
+        prnother.place(relx=.5,rely=.6, anchor='center')
+        # actually assigning profile vars
+        firstname = fname_entry.get()
+        lastname = lname_entry.get()
+        ageyear = yrage_entry.get()
+        agemonth = mnage_entry.get()
+        def submit_profile():
+            messagebox.showinfo("Profile Confirm", f"First Name: {fname_entry.get()}\tLast Name: {lname_entry.get()}\nAge: {yrage_entry.get()} years {mnage_entry.get()} months\nPronouns: {prncombo.get()}")
+            frame.destroy()  
+        tk.Button(frame, text="Submit",font=('Menlo', 12), command=submit_profile).place(relx=.5,rely=.7,anchor="center")
+        break
+    
+    # event loop for the app win   
     app_win.mainloop()
 
 # creating a function to destroy root
 def destroy1():
     root.destroy()
-
 # creating the login (+submit/cancel buttons)
 username = []
 password = []
-
-captcha = ""      
-def captcha_opener():
-    captchawin = tk.Tk()
-    captchawin.title("Captcha") 
-    def destroy2():
-        captchawin.destroy()
-    def captcha_submitter():
-        if captcha.isdigit():
-            if int(captcha) == 4:
-                destroy2()
-                open_app_win()
-    tk.Label(captchawin, text="Please complete the captcha.\n((11+3)*2)/7").grid(row=0,column=0)
-    frame2 = ttk.Frame(captchawin)
-    frame2.grid(row=2,column=0)
-    captcha_entry = tk.Entry(captchawin)
-    captcha_entry.grid(row=1,column=0)
-    tk.Button(frame2, text="Cancel", command=destroy2).grid(row=2, column=0, padx=2, pady=10)
-    tk.Button(frame2, text="Submit", command=captcha_submitter).grid(row=2, column=1, padx=2, pady=10)
-    captcha = captcha_entry.get()
-    captchawin.mainloop()
-
-
 def submit_login():
     inv_char_p = ""
     inv_char_u = ""
@@ -54,12 +81,10 @@ def submit_login():
         username.insert(0, setusername)
         password.append(setpassword)
         messagebox.showinfo("Confirm Credentials", f"Username: {username}\nPassword: {password}")
-        messagebox.showinfo("Login Successful.", "Please complete the Captcha.")
+        messagebox.showinfo("Login Successful.", "Welcome to the System of the Starship Tomia.")
         # destroy login window
         destroy1()
-        captcha_opener()
-        
-
+        open_app_win()
     else:
         for smth in setusername:
             if smth.isalnum():
@@ -75,22 +100,18 @@ def submit_login():
     return setusername, setpassword             
 root = tk.Tk()
 root.title("TomSys Login")
-
 # username/password labels
 frame = ttk.Frame(root)
-
 frame.grid(row=5,column=0)
 frame['relief'] = 'flat'
-tk.Label(root, text="Please set your username and password and login to continue.").grid(row=0,column=0,padx=10,pady=5)
-tk.Label(root, text="Username:").grid(row=1, column=0, padx=1, pady=5)
+tk.Label(root, text="Please set your username and password and login to continue.", font=('Menlo')).grid(row=0,column=0,padx=10,pady=5)
+tk.Label(root, text="Username:", font=('Menlo')).grid(row=1, column=0, padx=1, pady=5)
 username_entry = tk.Entry(root)
 username_entry.grid(row=2, column=0, padx=1, pady=5)
-tk.Label(root, text="Password:").grid(row=3, column=0, padx=1, pady=5)
+tk.Label(root, text="Password:", font=('Menlo')).grid(row=3, column=0, padx=1, pady=5)
 password_entry = tk.Entry(root, show = "*")
 password_entry.grid(row=4, column=0, padx=1, pady=5)
-# captcha labels/buttons
-
 #Buttons (in the login win)
-tk.Button(frame, text="Cancel", command=destroy1).grid(row=5, column=0, padx=2, pady=10)
-tk.Button(frame, text="Submit", command=submit_login).grid(row=5, column=1, padx=2, pady=10)
+tk.Button(frame, text="Cancel", font=('Menlo'), command=destroy1).grid(row=5, column=0, padx=2, pady=10)
+tk.Button(frame, text="Submit", font=('Menlo'), command=submit_login).grid(row=5, column=1, padx=2, pady=10)
 root.mainloop()
