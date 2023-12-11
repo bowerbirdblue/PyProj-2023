@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import simpledialog
 from tkinter import ttk
 from tkinter import messagebox
+# setting a loop
+loop1 = 0
 # creating the application window
 def open_app_win():
     # creating app_win
@@ -16,15 +18,13 @@ def open_app_win():
     ageyear = ""
     agemonth = ""
     usrpronoun = ""
-    # submit command button
-
     # profile setting widgets
     frame = tk.Frame(app_win)
-    frame.place(x=0,y=0,height=800, width=1200)
+    frame.place(x=0,y=0,height=1000, width=1200)
     frame["relief"]="groove"
     while True:
         # flavor text (title etc)
-        tk.Label(app_win, text="TomSys SetProfile",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
+        tk.Label(frame, text="TomSys SetProfile",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
         tk.Label(frame, text="Welcome. Please complete your profile.",font=('Menlo',18)).place(relx=.5, rely=.05, anchor="n")
         # first name
         tk.Label(frame, text="First Name:", font=('Menlo',15)).place(relx=.3, rely=.16, anchor="w")
@@ -57,14 +57,28 @@ def open_app_win():
         lastname = lname_entry.get()
         ageyear = yrage_entry.get()
         agemonth = mnage_entry.get()
+        def view_profile():
+            frame3 = tk.Frame(app_win)
+            frame3.place(x=0,y=0,height=1000,width=1200)
+            tk.Label(frame3, text="TomSys View Profile",font=('Menlo',20)).place(relx=0.5,rely=0,anchor="n")
+            tk.Label(frame3, f"First Name: {fname_entry.get}",font=('Menlo',20)).place(relx=0.25,rely=0.25,anchor="center")
+        def app_win_phase2():
+            frame2 = tk.Frame(app_win)
+            frame2.place(x=0,y=0,height=1000, width=1200)
+            tk.Label(frame2, text="TomSys Home",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
+            viewprof = tk.Button(frame2, text="View Profile", font=('Menlo',15),command=view_profile).place(relx=0.25,rely=0.25,anchor="center")     
         def submit_profile():
-            messagebox.showinfo("Profile Confirm", f"First Name: {fname_entry.get()}\tLast Name: {lname_entry.get()}\nAge: {yrage_entry.get()} years {mnage_entry.get()} months\nPronouns: {prncombo.get()}")
-            frame.destroy()  
+            messagebox.showinfo("Profile Confirm", f"First Name: {fname_entry.get}\tLast Name: {lname_entry.get()}\nAge: {yrage_entry.get()} years {mnage_entry.get()} months\nPronouns: {prncombo.get()}")
+            frame.destroy()
+            loop1 = 1
+            app_win_phase2()
+            return 
+        # submit command button
         tk.Button(frame, text="Submit",font=('Menlo', 12), command=submit_profile).place(relx=.5,rely=.7,anchor="center")
-        break
-    
+        break    
     # event loop for the app win   
     app_win.mainloop()
+
 
 # creating a function to destroy root
 def destroy1():
