@@ -162,6 +162,9 @@ def submit_login():
         root and opens app_win if true
         if false, adds invalid characters to inv_char_u and inv_char_p and shows in messagebox
         """
+        global inv_char_p, inv_char_u
+        inv_char_p = ""
+        inv_char_u = ""
         # stores stored username/password values if alnum
         if setusername.isalnum() and setpassword.isalnum():
             username.insert(0, setusername)
@@ -184,23 +187,24 @@ def submit_login():
                 else:
                     inv_char_p += smth
             messagebox.showerror("Error - Invalid Username or Password", f"Invalid Characters (Usr): {inv_char_u}" + f"\nInvalid Characters (Pwd): {inv_char_p}")
+            login_win()
     authenticate(username, password)    
     return setusername, setpassword             
+# creating "root" (aka login window)
+# creates login window (root), frame
+root = tk.Tk()
+root.title("TomSys Login")
+frame = ttk.Frame(root)
+frame.grid(row=5,column=0)
+frame['relief'] = 'flat'
 def login_win():
     """
-    creates login window (root), frame + labels and entries and submit button, which calls submit_login
-    when pressed
+    creates labels and entries and submit button, which calls submit_login when pressed
     """
     # globalizes login_win variables
     global username_entry, password_entry, root, frame
-    # creating "root" (aka login window)
-    root = tk.Tk()
-    root.title("TomSys Login")
     # creating the login (+submit/cancel buttons), getting values
     # username/password labels and entries
-    frame = ttk.Frame(root)
-    frame.grid(row=5,column=0)
-    frame['relief'] = 'flat'
     tk.Label(root, text="Please set your username and password and login to continue.", font=('Menlo')).grid(row=0,column=0,padx=10,pady=5)
     tk.Label(root, text="Username:", font=('Menlo')).grid(row=1, column=0, padx=1, pady=5)
     username_entry = tk.Entry(root)
