@@ -18,7 +18,7 @@ def open_app_win():
     creates app window (app_win), names + sets size
     creates list variables for name/age/pronouns etc, globalizes them and assigns them
     creates frames for different stages of window, widgets that go in the frames, destroys when necessary
-
+    serves as main program window
     """
     # creating app_win
     app_win = tk.Tk()
