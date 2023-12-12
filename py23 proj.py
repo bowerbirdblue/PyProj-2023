@@ -1,4 +1,13 @@
 # universal serial 🅱️us
+"""
+Levi Pender
+12/11/2023
+This project was a bit weird. Most of my issues revolved around either not having appropriate permissions
+to use Python/etc or general Tkinter weirdness (which there is *a lot of*. seriously.) However, even though
+there are some things that don't quite work the way I want, and some things I want to add or remove,
+I'm pretty proud of myself and happy with it. It was fun and challenging in a good way, and I appreciate
+that a lot.
+"""
 import tkinter as tk
 from tkinter import simpledialog
 from tkinter import ttk
@@ -11,16 +20,19 @@ def open_app_win():
     app_win = tk.Tk()
     app_win.title("TomSys")
     # window size
-    app_win.geometry("1200x1000")
+    app_win.geometry("1200x830")
     # pre-setting profile vars
-    firstname = ""
-    lastname = ""
-    ageyear = ""
-    agemonth = ""
-    usrpronoun = ""
+    global username_prolist, password_prolist, firstnamelist, lastnamelist, ageyearlist, agemonthlist, usrpronounlist
+    firstnamelist = []
+    lastnamelist = []
+    ageyearlist = []
+    agemonthlist = []
+    usrpronounlist = []
+    username_prolist = []
+    password_prolist = []
     # profile setting widgets
     frame = tk.Frame(app_win)
-    frame.place(x=0,y=0,height=1000, width=1200)
+    frame.place(x=0,y=0,height=830, width=1200)
     frame["relief"]="groove"
     while True:
         # flavor text (title etc)
@@ -53,22 +65,41 @@ def open_app_win():
         prnother = tk.Entry(frame)
         prnother.place(relx=.5,rely=.6, anchor='center')
         # actually assigning profile vars
-        firstname = fname_entry.get()
-        lastname = lname_entry.get()
-        ageyear = yrage_entry.get()
-        agemonth = mnage_entry.get()
         def view_profile():
             frame3 = tk.Frame(app_win)
-            frame3.place(x=0,y=0,height=1000,width=1200)
-            tk.Label(frame3, text="TomSys View Profile",font=('Menlo',20)).place(relx=0.5,rely=0,anchor="n")
-            tk.Label(frame3, f"First Name: {fname_entry.get}",font=('Menlo',20)).place(relx=0.25,rely=0.25,anchor="center")
+            frame3.place(x=0,y=0,height=830,width=1200)
+            #frame4 = tk.Frame(frame3)
+            #frame4.place(x=0,y=0,)
+            tk.Label(frame3, text="Your Profile Info:",font=('Menlo', 20)).place(relx=0.1,rely=0,anchor="n")
+            tk.Label(frame3, text=f"First Name: {firstname}",font=('Menlo', 17)).place(relx=0.05,rely=0.075,anchor="w")
+            tk.Label(frame3, text=f"Last Name: {lastname}",font=('Menlo', 17)).place(relx=0.05,rely=0.105,anchor="w")
+            tk.Label(frame3, text=f"Age: {ageyear}y {agemonth}m", font=('Menlo',17)).place(relx=0.05,rely=.15,anchor="w")
+            #tk.Label(frame3,)
+            tk.Button(frame3, text="Go Back", font=('Menlo', 15), command=app_win_phase2).place(relx=0.05,rely=.9,anchor="w")
+            #tk.Button(frame3, text="Change")
         def app_win_phase2():
             frame2 = tk.Frame(app_win)
-            frame2.place(x=0,y=0,height=1000, width=1200)
+            frame2.place(x=0,y=0,height=830, width=1200)
             tk.Label(frame2, text="TomSys Home",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
-            viewprof = tk.Button(frame2, text="View Profile", font=('Menlo',15),command=view_profile).place(relx=0.25,rely=0.25,anchor="center")     
+            tk.Button(frame2, text="View Profile", font=('Menlo',15),command=view_profile).place(relx=0.25,rely=0.25,anchor="center",width=350,height=150)     
         def submit_profile():
-            messagebox.showinfo("Profile Confirm", f"First Name: {fname_entry.get}\tLast Name: {lname_entry.get()}\nAge: {yrage_entry.get()} years {mnage_entry.get()} months\nPronouns: {prncombo.get()}")
+            global username_pro, password_pro, firstname, lastname, ageyear, agemonth, usrpronoun
+            firstnamelist.append(fname_entry.get())
+            firstname = firstnamelist.pop(0)
+            lastnamelist.append(lname_entry.get())
+            lastname = lastnamelist.pop(0)
+            ageyearlist.append(yrage_entry.get())
+            ageyear = ageyearlist.pop(0)
+            agemonthlist.append(mnage_entry.get())
+            agemonth = agemonthlist.pop(0)
+            usrpronounlist.append(current_var.get())
+            if "Other" in usrpronounlist:
+                usrpronounlist.remove("Other")
+                usrpronounlist.append(prnother.get())
+            else:
+                pass
+            usrpronoun = usrpronounlist.pop(0)
+            messagebox.showinfo("Profile Confirm", f"First Name: {firstname}\tLast Name: {lastname}\nAge: {ageyear} years {agemonth} months\nPronouns: {usrpronoun}")
             frame.destroy()
             loop1 = 1
             app_win_phase2()
@@ -78,8 +109,6 @@ def open_app_win():
         break    
     # event loop for the app win   
     app_win.mainloop()
-
-
 # creating a function to destroy root
 def destroy1():
     root.destroy()
@@ -94,7 +123,7 @@ def submit_login():
     if setusername.isalnum() and setpassword.isalnum():
         username.insert(0, setusername)
         password.append(setpassword)
-        messagebox.showinfo("Confirm Credentials", f"Username: {username}\nPassword: {password}")
+        messagebox.showinfo("Confirm Credentials", f"Username: {setusername}\nPassword: {setpassword}")
         messagebox.showinfo("Login Successful.", "Welcome to the System of the Starship Tomia.")
         # destroy login window
         destroy1()
