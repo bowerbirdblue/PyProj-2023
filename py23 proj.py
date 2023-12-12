@@ -12,10 +12,14 @@ import tkinter as tk
 from tkinter import simpledialog
 from tkinter import ttk
 from tkinter import messagebox
-# setting a loop
-loop1 = 0
 # creating the application window
 def open_app_win():
+    """
+    creates app window (app_win), names + sets size
+    creates list variables for name/age/pronouns etc, globalizes them and assigns them
+    creates frames for different stages of window, widgets that go in the frames, destroys when necessary
+
+    """
     # creating app_win
     app_win = tk.Tk()
     app_win.title("TomSys")
@@ -31,130 +35,181 @@ def open_app_win():
     username_prolist = []
     password_prolist = []
     # profile setting widgets
-    frame = tk.Frame(app_win)
-    frame.place(x=0,y=0,height=830, width=1200)
-    frame["relief"]="groove"
+    frame1 = tk.Frame(app_win)
+    frame1.place(x=0,y=0,height=830, width=1200)
+    frame1["relief"]="groove"
     while True:
+        """
+        *(this isnt a function but does a lot so i've docstring-ed it too)*
+        creates labels and entries for profile entry screen, 'submits' them (stores values and destroys 
+        graphics) upon button press
+        """
         # flavor text (title etc)
-        tk.Label(frame, text="TomSys SetProfile",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
-        tk.Label(frame, text="Welcome. Please complete your profile.",font=('Menlo',18)).place(relx=.5, rely=.05, anchor="n")
-        # first name
-        tk.Label(frame, text="First Name:", font=('Menlo',15)).place(relx=.3, rely=.16, anchor="w")
-        fname_entry = tk.Entry(frame)
+        tk.Label(frame1, text="TomSys SetProfile",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
+        tk.Label(frame1, text="Welcome. Please complete your profile.",font=('Menlo',18)).place(relx=.5, rely=.05, anchor="n")
+        # first name entry
+        tk.Label(frame1, text="First Name:", font=('Menlo',15)).place(relx=.3, rely=.16, anchor="w")
+        fname_entry = tk.Entry(frame1)
         fname_entry.place(relx=.3,rely=.19,anchor="w")
-        # last name
-        tk.Label(frame, text="Last Name:", font=('Menlo',15)).place(relx=.3,rely=.23,anchor="w")
-        lname_entry = tk.Entry(frame)
+        # last name entry
+        tk.Label(frame1, text="Last Name:", font=('Menlo',15)).place(relx=.3,rely=.23,anchor="w")
+        lname_entry = tk.Entry(frame1)
         lname_entry.place(relx=.3,rely=.26,anchor="w")
-        # age (years)
-        tk.Label(frame, text="Age (Years):", font=('Menlo',15)).place(relx=.7,rely=.16,anchor="e")
-        yrage_entry = tk.Entry(frame)
+        # age (years) entry
+        tk.Label(frame1, text="Age (Years):", font=('Menlo',15)).place(relx=.7,rely=.16,anchor="e")
+        yrage_entry = tk.Entry(frame1)
         yrage_entry.place(relx=.7,rely=.19,anchor="e")
-        # age (months)
-        tk.Label(frame, text="Age (Addl. Months):",font=('Menlo',15)).place(relx=.7,rely=.23,anchor="e")
-        mnage_entry = tk.Entry(frame)
+        # age (months) entry
+        tk.Label(frame1, text="Age (Addl. Months):",font=('Menlo',15)).place(relx=.7,rely=.23,anchor="e")
+        mnage_entry = tk.Entry(frame1)
         mnage_entry.place(relx=.7,rely=.26,anchor="e")
-        # pronouns
-        tk.Label(frame, text="Pronouns:", font=('Menlo', 15)).place(relx=.5, rely=.46,anchor="center")
+        # pronouns entry
+        tk.Label(frame1, text="Pronouns:", font=('Menlo', 15)).place(relx=.5, rely=.46,anchor="center")
         current_var = tk.StringVar()
         current_value = current_var.get()
-        prncombo = ttk.Combobox(frame, state="readonly", textvariable=current_var)
+        prncombo = ttk.Combobox(frame1, state="readonly", textvariable=current_var)
         prncombo['values'] = ("He/Him/His", "She/Her/Hers", "They/Them/Theirs", "Other")
         prncombo.place(relx=.5, rely=.50,anchor="center")
-        tk.Label(frame, text="If 'Other', please specify here.", font=('Menlo', 12)).place(relx=.5,rely=.56,anchor='center')
-        prnother = tk.Entry(frame)
+        # pronoun entry if other
+        tk.Label(frame1, text="If 'Other', please specify here.", font=('Menlo', 12)).place(relx=.5,rely=.56,anchor='center')
+        prnother = tk.Entry(frame1)
         prnother.place(relx=.5,rely=.6, anchor='center')
-        # actually assigning profile vars
         def view_profile():
+            """
+            upon button press, creates + configures frame3, places labels on it displaying stored profile
+            info, creates "back" button which sends user back to app_win_phase2
+            """
             frame3 = tk.Frame(app_win)
             frame3.place(x=0,y=0,height=830,width=1200)
-            #frame4 = tk.Frame(frame3)
-            #frame4.place(x=0,y=0,)
+            # displays profile info
             tk.Label(frame3, text="Your Profile Info:",font=('Menlo', 20)).place(relx=0.1,rely=0,anchor="n")
             tk.Label(frame3, text=f"First Name: {firstname}",font=('Menlo', 17)).place(relx=0.05,rely=0.075,anchor="w")
             tk.Label(frame3, text=f"Last Name: {lastname}",font=('Menlo', 17)).place(relx=0.05,rely=0.105,anchor="w")
             tk.Label(frame3, text=f"Age: {ageyear}y {agemonth}m", font=('Menlo',17)).place(relx=0.05,rely=.15,anchor="w")
-            #tk.Label(frame3,)
+            tk.Label(frame3, text=f"Pronouns: {usrpronoun}", font=('Menlo',17)).place(relx=0.05,rely=.195,anchor="w")
+            tk.Label(frame3, text=f"Username: {username.pop(0)}", font=('Menlo',17)).place(relx=0.35,rely=.075,anchor="w")
             tk.Button(frame3, text="Go Back", font=('Menlo', 15), command=app_win_phase2).place(relx=0.05,rely=.9,anchor="w")
-            #tk.Button(frame3, text="Change")
         def app_win_phase2():
+            """
+            creates + configures 'phase 2' frame for app_win, adds labels
+            """
             frame2 = tk.Frame(app_win)
             frame2.place(x=0,y=0,height=830, width=1200)
             tk.Label(frame2, text="TomSys Home",font=('Menlo',20)).place(relx=0.5,rely=0, anchor="n")
             tk.Button(frame2, text="View Profile", font=('Menlo',15),command=view_profile).place(relx=0.25,rely=0.25,anchor="center",width=350,height=150)     
         def submit_profile():
-            global username_pro, password_pro, firstname, lastname, ageyear, agemonth, usrpronoun
-            firstnamelist.append(fname_entry.get())
-            firstname = firstnamelist.pop(0)
-            lastnamelist.append(lname_entry.get())
-            lastname = lastnamelist.pop(0)
-            ageyearlist.append(yrage_entry.get())
-            ageyear = ageyearlist.pop(0)
-            agemonthlist.append(mnage_entry.get())
-            agemonth = agemonthlist.pop(0)
-            usrpronounlist.append(current_var.get())
-            if "Other" in usrpronounlist:
-                usrpronounlist.remove("Other")
-                usrpronounlist.append(prnother.get())
-            else:
-                pass
-            usrpronoun = usrpronounlist.pop(0)
+            """
+            contains + runs assignage function, creates + displays messagebox, destroys frame 
+            (profile submit screen) and runs app_win_phase2 upon pressing of submit button
+            """
+            def assignage(a,b):
+                """
+                adds profile entry variables to list variables, pops list values to display variables
+                """
+                # actually assigning profile vars (list and then display value)
+                global username_pro, password_pro, firstname, lastname, ageyear, agemonth, usrpronoun
+                firstnamelist.append(fname_entry.get())
+                firstname = firstnamelist.pop(0)
+                lastnamelist.append(lname_entry.get())
+                lastname = lastnamelist.pop(0)
+                ageyearlist.append(yrage_entry.get())
+                ageyear = ageyearlist.pop(0)
+                agemonthlist.append(mnage_entry.get())
+                agemonth = agemonthlist.pop(0)
+                usrpronounlist.append(current_var.get())
+                if "Other" in usrpronounlist:
+                    usrpronounlist.remove("Other")
+                    usrpronounlist.append(prnother.get())
+                else:
+                    pass
+                usrpronoun = usrpronounlist.pop(0)
+            assignage("a", "b")
+            # vv what happens when profile submit button is pressed vv
             messagebox.showinfo("Profile Confirm", f"First Name: {firstname}\tLast Name: {lastname}\nAge: {ageyear} years {agemonth} months\nPronouns: {usrpronoun}")
-            frame.destroy()
-            loop1 = 1
+            frame1.destroy()
             app_win_phase2()
             return 
         # submit command button
-        tk.Button(frame, text="Submit",font=('Menlo', 12), command=submit_profile).place(relx=.5,rely=.7,anchor="center")
+        tk.Button(frame1, text="Submit",font=('Menlo', 12), command=submit_profile).place(relx=.5,rely=.7,anchor="center")
         break    
     # event loop for the app win   
     app_win.mainloop()
 # creating a function to destroy root
 def destroy1():
+    """
+    destroys root window (login window)
+    """
     root.destroy()
-# creating the login (+submit/cancel buttons)
 username = []
 password = []
+# vv what happens when submit button is pressed vv
 def submit_login():
+    """
+    takes in two strings (setusername and setpassword), checks if they are both alphanumeric, continues 
+    to success + confirmation messageboxes then app_win if true and does not continue if false.
+    if false, failure messagebox is displayed 
+    """
+    # storage for invalid characters
+    global inv_char_p, inv_char_u
     inv_char_p = ""
     inv_char_u = ""
+    # initial storage of username/password values
     setusername = username_entry.get()
     setpassword = password_entry.get()
-    if setusername.isalnum() and setpassword.isalnum():
-        username.insert(0, setusername)
-        password.append(setpassword)
-        messagebox.showinfo("Confirm Credentials", f"Username: {setusername}\nPassword: {setpassword}")
-        messagebox.showinfo("Login Successful.", "Welcome to the System of the Starship Tomia.")
-        # destroy login window
-        destroy1()
-        open_app_win()
-    else:
-        for smth in setusername:
-            if smth.isalnum():
-                pass
-            else:
-                inv_char_u += smth
-        for smth in setpassword:
-            if smth.isalnum():
-                pass
-            else:
-                inv_char_p += smth
-        messagebox.showerror("Error - Invalid Username or Password", f"Invalid Characters (Usr): {inv_char_u}" + f"\nInvalid Characters (Pwd): {inv_char_p}")
+    def authenticate(ulog, plog):
+        """
+        checks if setusername and setpassword are alnum, adds them to username and password, destroys 
+        root and opens app_win if true
+        if false, adds invalid characters to inv_char_u and inv_char_p and shows in messagebox
+        """
+        # stores stored username/password values if alnum
+        if setusername.isalnum() and setpassword.isalnum():
+            username.insert(0, setusername)
+            password.append(setpassword)
+            messagebox.showinfo("Confirm Credentials", f"Username: {setusername}\nPassword: {setpassword}")
+            messagebox.showinfo("Login Successful.", "Welcome to the System of the Starship Tomia.")
+            # destroy login window
+            destroy1()
+            open_app_win()
+        else:
+            # if username/password values are not alnum, iterates through initial stored values and takes + stores non-alnum characters, then displays
+            for smth in setusername:
+                if smth.isalnum():
+                    pass
+                else:
+                    inv_char_u += smth
+            for smth in setpassword:
+                if smth.isalnum():
+                    pass
+                else:
+                    inv_char_p += smth
+            messagebox.showerror("Error - Invalid Username or Password", f"Invalid Characters (Usr): {inv_char_u}" + f"\nInvalid Characters (Pwd): {inv_char_p}")
+    authenticate(username, password)    
     return setusername, setpassword             
-root = tk.Tk()
-root.title("TomSys Login")
-# username/password labels
-frame = ttk.Frame(root)
-frame.grid(row=5,column=0)
-frame['relief'] = 'flat'
-tk.Label(root, text="Please set your username and password and login to continue.", font=('Menlo')).grid(row=0,column=0,padx=10,pady=5)
-tk.Label(root, text="Username:", font=('Menlo')).grid(row=1, column=0, padx=1, pady=5)
-username_entry = tk.Entry(root)
-username_entry.grid(row=2, column=0, padx=1, pady=5)
-tk.Label(root, text="Password:", font=('Menlo')).grid(row=3, column=0, padx=1, pady=5)
-password_entry = tk.Entry(root, show = "*")
-password_entry.grid(row=4, column=0, padx=1, pady=5)
-#Buttons (in the login win)
-tk.Button(frame, text="Cancel", font=('Menlo'), command=destroy1).grid(row=5, column=0, padx=2, pady=10)
-tk.Button(frame, text="Submit", font=('Menlo'), command=submit_login).grid(row=5, column=1, padx=2, pady=10)
-root.mainloop()
+def login_win():
+    """
+    creates login window (root), frame + labels and entries and submit button, which calls submit_login
+    when pressed
+    """
+    # globalizes login_win variables
+    global username_entry, password_entry, root, frame
+    # creating "root" (aka login window)
+    root = tk.Tk()
+    root.title("TomSys Login")
+    # creating the login (+submit/cancel buttons), getting values
+    # username/password labels and entries
+    frame = ttk.Frame(root)
+    frame.grid(row=5,column=0)
+    frame['relief'] = 'flat'
+    tk.Label(root, text="Please set your username and password and login to continue.", font=('Menlo')).grid(row=0,column=0,padx=10,pady=5)
+    tk.Label(root, text="Username:", font=('Menlo')).grid(row=1, column=0, padx=1, pady=5)
+    username_entry = tk.Entry(root)
+    username_entry.grid(row=2, column=0, padx=1, pady=5)
+    tk.Label(root, text="Password:", font=('Menlo')).grid(row=3, column=0, padx=1, pady=5)
+    password_entry = tk.Entry(root, show = "*")
+    password_entry.grid(row=4, column=0, padx=1, pady=5)
+    # cancel/submit buttons for login screen
+    tk.Button(frame, text="Cancel", font=('Menlo'), command=destroy1).grid(row=5, column=0, padx=2, pady=10)
+    tk.Button(frame, text="Submit", font=('Menlo'), command=submit_login).grid(row=5, column=1, padx=2, pady=10)
+    root.mainloop()
+login_win()
